@@ -1,0 +1,106 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CookMate</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">CookMate</div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="#recipes">Recipes</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Discover Healthy Recipes</h1>
+    <p>Your everyday cooking companion</p>
+  </section>
+    
+  <section class="search-section">
+    <form method="post" action="/submit" >
+      <h1>What would you like to cook today?</h1>
+      <div class="search-bar">
+        
+          <input type="text" placeholder="Search for recipes..." name="search"/>
+          <button type="submit"><img src="images/search-bar.png" alt="search"></button>
+          
+      </div>
+
+      <div class="filters">
+          <select name="health">
+          <option disabled selected>Health</option>
+          <option>gluten-free</option>
+          <option>vegetarian</option>
+          <option>vegan</option>
+          <option>paleo</option>
+          <option>pescatarian</option>
+          <option>immuno-supportive</option>
+          <option>fish-free</option>
+          <option>egg-free</option>
+          <option>alcohol-free</option>
+          </select>
+          <select name="cuisineType">
+          <option disabled selected>Cuisine</option>
+          <option>Asian</option>
+          <option>American</option>
+          <option>British</option>
+          <option>Caribbean</option>
+          <option>Central Europe</option>
+          <option>Chinese</option>
+          </select>
+          <select name="time">
+          <option disabled selected>Time</option>
+          <option>Under 15 min</option>
+          <option>15 to 30 min</option>
+          <option>More than 30 min</option>
+          </select>
+          <select name="co2">
+          <option disabled selected>CO2 Foot Print</option>
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>  
+          <option>E</option>
+          <option>F</option>
+          <option>G</option>
+          </select>
+      </div>
+    </form>
+    </section>
+
+
+
+  <section id="recipes" class="recipes">
+    <h2>Popular Recipes</h2>
+    
+    <%if(locals.recipe){%>
+    
+    <div class="card-container">
+    <% for(var i=0;i<recipe.length;i++){ %>
+    <a href="/recipe/<%=i%>">
+      <div class="card">
+        <img src=<%=recipe[i].recipe.image%> alt=<%=recipe[i].recipe.label%> class="label-img">
+        <h3><%=recipe[i].recipe.label%></h3>
+        <p><img src="images/clock.png" class="icon">  <%=recipe[i].recipe.totalTime%>min  |  <img src="images/fire.png" class="icon">  <%=Math.round(recipe[i].recipe.calories)%>Kcal</p>
+      </div>
+    </a>
+    <% } %>
+    </div>
+    
+    <% }else{ %>
+      <p>Recipe Not Available</p>
+      <% } %>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 CookMate. All rights reserved.</p>
+  </footer>
+</body>
+</html>
