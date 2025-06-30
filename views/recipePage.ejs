@@ -283,10 +283,11 @@ ol {
   <img src=<%= recipe.recipe.image %> alt=<%= recipe.recipe.lebel %> class="recipe-image">
 
   <div class="recipe-content">
-    <h1><%= recipe.recipe.lebel %></h1>
+    <h1><%= recipe.recipe.label %></h1>
     <div class="meta">
       <span>🕒 <%= recipe.recipe.totalTime %> min</span>
       <span>🔥 <%= Math.round(recipe.recipe.calories) %> kcal</span>
+      <span><a href="<%= recipe.recipe.url %>">Complete Recipe</a></span>
     </div>
 
     <h2>Ingredients</h2>
