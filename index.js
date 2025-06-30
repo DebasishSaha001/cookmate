@@ -3,16 +3,16 @@ import axios from "axios";
 import bodyParser from "body-parser";
 
 const app=express();
-const port= process.env.PORT || 3000;
+const port=3000;
 let search="any";
 const appId="eab55469";
 const appKey="ae7518efbc86b24c603ca350575e447e";
-
+let latestRecipes=[];
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.get("/",async(req,res)=>{
-    var url=`https://api.edamam.com/api/recipes/v2?type=any&q=${search}&app_id=${appId}&app_key=${appKey}&random=true`;
+    var url=`https://api.edamam.com/api/recipes/v2?type=any&q=${search}&app_id=${appId}&app_key=${appKey}`;
     try{
         const response=await axios.get(url,{
         headers:{
@@ -20,17 +20,9 @@ app.get("/",async(req,res)=>{
         }
         });
         const recipe=response.data.hits;
+        latestRecipes=recipe;
         res.render("index.ejs",{
-        recipe:recipe
-        });
-
-        app.get("/recipe/:id",(req,res)=>{
-        const id=parseInt(req.params.id,10);
-        if(id<recipe.length && id>=0){
-                res.render("recipePage.ejs",{
-                    recipe:recipe[id]
-        });
-        }     
+            recipe:recipe
         });
     } catch(error){
         res.send(error);
@@ -73,26 +65,29 @@ app.post("/submit",async(req,res)=>{
         }
         });
         const recipe=response.data.hits;
+        latestRecipes = recipe;
         res.render("index.ejs",{
         recipe:recipe
         });
 
-        app.get("/recipe/:id",(req,res)=>{
-            const id=parseInt(req.params.id,10);
-            if(id<recipe.length && id>=0){
-                res.render("recipePage.ejs",{
-                    recipe:recipe[id]
-                });
-            }
-            
-        });
-
     } catch(error){
-        res.render("index.ejs");
+        res.send(error);
 
     }
 
     
+});
+
+app.get("/recipe/:id",(req,res)=>{
+    const id=parseInt(req.params.id);
+            
+    if (!latestRecipes[id]) {
+        return res.status(404).send("Recipe not found");
+    }else{
+    res.render("recipePage.ejs", {
+        recipe: latestRecipes[id]
+    });    
+    }
 });
 
 app.listen(port,()=>{
