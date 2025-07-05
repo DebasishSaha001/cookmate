@@ -3,7 +3,7 @@ import axios from "axios";
 import bodyParser from "body-parser";
 
 const app=express();
-const port=3000;
+const port= process.env.PORT || 3000;
 let search="any";
 const appId="eab55469";
 const appKey="ae7518efbc86b24c603ca350575e447e";
